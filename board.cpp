@@ -98,6 +98,38 @@ void Board::getValidMoves(move moves[12][12], int row, int col){
             moves[start_r][actual_col] = MOVE;
         }
     }
+    else if(p == KNIGHT){
+        /*
+            -  1  -  2  -
+            8  -  -  -  3
+            -  -  K  -  -
+            7  -  -  -  4
+            -  6  -  5  -
+        */
+
+        std::cout << "Getting the moves for a knight at " << row << "," << col << "\n";
+
+        int rows[4] = {actual_row - 2, actual_row + 2, actual_row - 1, actual_row + 1};
+        int cols[4] = {actual_col - 1, actual_col + 1, actual_col - 2, actual_col + 2};
+
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 2; j++){
+                if(board[rows[i]][cols[j]] == EMPTY){
+                    moves[rows[i]][cols[j]] = MOVE;
+                }
+                else if(color[rows[i]][cols[j]] != c && board[rows[i]][cols[j]] != INVALID && board[rows[i]][cols[j]] != KING){
+                    moves[rows[i]][cols[j]] = ATTACK;
+                }
+
+                if(board[rows[i+2]][cols[j+2]] == EMPTY){
+                    moves[rows[i+2]][cols[j+2]] = MOVE;
+                }
+                else if(color[rows[i+2]][cols[j+2]] != c && board[rows[i+2]][cols[j+2]] != INVALID && board[rows[i+2]][cols[j+2]] != KING){
+                    moves[rows[i+2]][cols[j+2]] = ATTACK;
+                }
+            }
+        }
+    }
 }
 
 
@@ -106,23 +138,23 @@ int main(){
     
     piece testBoard[8][8] = {
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-        {EMPTY, PAWN, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-        {PAWN, PAWN, PAWN, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-        {EMPTY, PAWN, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+        {EMPTY, EMPTY, EMPTY, EMPTY, KNIGHT, EMPTY, EMPTY, EMPTY},
+        {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+        {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, PAWN, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}
     };
 
     player testColor[8][8] = {
         {NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE},
-        {NONE, WHITE, NONE, NONE, NONE, NONE, NONE, NONE},
-        {BLACK, BLACK, BLACK, NONE, NONE, NONE, NONE, NONE},
         {NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE},
         {NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE},
         {NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE},
+        {NONE, NONE, NONE, NONE, WHITE, NONE, NONE, NONE},
         {NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE},
+        {NONE, NONE, NONE, NONE, NONE, BLACK, NONE, NONE},
         {NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE}
     };
 
@@ -130,7 +162,7 @@ int main(){
     b.printBoard();
 
     move moves[12][12] = {};
-    b.getValidMoves(moves, 2, 0);
+    b.getValidMoves(moves, 4, 4);
     b.printMoveSet(moves);
 
     
